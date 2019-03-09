@@ -127,7 +127,12 @@ func UpdateBlockHostingVolumeSize(volInfo *volume.Volinfo, blockSize interface{}
 		return errors.New("block-hosting-available-size metadata not found for volume")
 	}
 
+	err := errors.New("Test")
+	log.WithError(err).Errorf("poornima 2. For the bhv :%s, BlockHostingAvailableSize:%v", volInfo.Name, volInfo.Metadata[volume.BlockHostingAvailableSize])
+
 	availableSizeInBytes, err := strconv.ParseUint(volInfo.Metadata[volume.BlockHostingAvailableSize], 10, 64)
+	log.WithError(err).Errorf("poornima 3. For the bhv :%s, availableSizeInBytes:%v, blockSize:%v", volInfo.Name, availableSizeInBytes, blockSize)
+
 	if err != nil {
 		return err
 	}
@@ -154,6 +159,7 @@ func UpdateBlockHostingVolumeSize(volInfo *volume.Volinfo, blockSize interface{}
 	}).Debug("resizing hosting volume")
 
 	volInfo.Metadata[volume.BlockHostingAvailableSize] = fmt.Sprintf("%d", resizeFunc(availableSizeInBytes, uint64(blkSize)))
+	log.WithError(err).Errorf("poornima 4. For the bhv :%s, setting BlockHostingAvailableSize:%s, blkSize:%v, uint64(blkSize):%v", volInfo.Name, volInfo.Metadata[volume.BlockHostingAvailableSize], blkSize, uint64(blkSize))
 
 	return nil
 }
